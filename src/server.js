@@ -7,6 +7,7 @@ import mongoose from 'mongoose';
 import authRoutes from './routes/auth.routes.js';
 import userRoutes from './routes/users.routes.js';
 import seedRoles from './utils/seedRoles.js';
+import errorHandler, { apiNotFound } from './middlewares/errorHandler.js';
 
 const app = express();
 
@@ -22,11 +23,11 @@ app.use('/api/users', userRoutes);
 // Validar estado del servidor
 app.get('/health', (req, res) => res.status(200).json({ ok: true }));
 
+// Rutas /api inexistentes responden 404 en JSON
+app.use('/api', apiNotFound);
+
 // Manejador global de errores
-app.use((err, req, res, next) => {
-    console.error(err);
-    res.status(err.status || 500).json({ message: err.message || 'Error interno del servidor' });
-});
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 3000;
 
