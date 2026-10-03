@@ -1,0 +1,107 @@
+# Evidencia de la tarea: API después de los cambios
+# Base temporal auth_db_tmp (se elimina al terminar), puerto 3099, 2026-10-03 09:50. Tokens y hashes recortados.
+# Arranque: Mongo connected Seeded roles: user, admin Seeded admin: admin@lab07.pe 
+
+# Registro válido: el body pide roles:["admin"] y se ignora (queda user)
+$ curl -X POST localhost:3099/api/auth/signUp -H Content-Type: application/json -d {"name":"Ana","lastName":"Torres","email":"Ana.Torres@Demo.pe","password":"Torres#2026","phoneNumber":"987654321","birthdate":"2001-04-12","roles":["admin"]}
+{"id":"6ac1164f81c023f8c2bd705e","email":"ana.torres@demo.pe","name":"Ana","lastName":"Torres","roles":["user"]}  [HTTP 201]
+
+# Contraseña débil: 400 con la lista de reglas incumplidas
+$ curl -X POST localhost:3099/api/auth/signUp -H Content-Type: application/json -d {"name":"Ana","lastName":"Torres","email":"otra@demo.pe","password":"torres26","phoneNumber":"987654321","birthdate":"2001-04-12"}
+{"message":"La contraseña no cumple la política de seguridad","errors":["Al menos una letra mayúscula","Al menos un carácter especial: # $ % & * @"]}  [HTTP 400]
+
+# Sin special de # $ % & * @ (el ! no cuenta)
+$ curl -X POST localhost:3099/api/auth/signUp -H Content-Type: application/json -d {"name":"Ana","lastName":"Torres","email":"otra@demo.pe","password":"Torres!2026","phoneNumber":"987654321","birthdate":"2001-04-12"}
+{"message":"La contraseña no cumple la política de seguridad","errors":["Al menos un carácter especial: # $ % & * @"]}  [HTTP 400]
+
+# Campos requeridos de la tarea faltantes: 400
+$ curl -X POST localhost:3099/api/auth/signUp -H Content-Type: application/json -d {"email":"otra@demo.pe","password":"Torres#2026"}
+{"message":"Hay datos inválidos","errors":["El nombre es requerido","El apellido es requerido","El teléfono es requerido","La fecha de nacimiento es requerida"]}  [HTTP 400]
+
+# Fecha de nacimiento futura: 400
+$ curl -X POST localhost:3099/api/auth/signUp -H Content-Type: application/json -d {"name":"Ana","lastName":"Torres","email":"otra@demo.pe","password":"Torres#2026","phoneNumber":"987654321","birthdate":"2040-01-01"}
+{"message":"Hay datos inválidos","errors":["La fecha de nacimiento no puede estar en el futuro"]}  [HTTP 400]
+
+# Email duplicado (en otra capitalización): 400
+$ curl -X POST localhost:3099/api/auth/signUp -H Content-Type: application/json -d {"name":"Ana","lastName":"Torres","email":"ANA.TORRES@demo.pe","password":"Torres#2026","phoneNumber":"987654321","birthdate":"2001-04-12"}
+{"message":"El email ya se encuentra en uso"}  [HTTP 400]
+
+# signIn con contraseña incorrecta: 401
+$ curl -X POST localhost:3099/api/auth/signIn -H Content-Type: application/json -d {"email":"ana.torres@demo.pe","password":"Mala#2026x"}
+{"message":"Credenciales inválidas"}  [HTTP 401]
+
+# signIn con un objeto en vez de email: 400
+$ curl -X POST localhost:3099/api/auth/signIn -H Content-Type: application/json -d {"email":{"$ne":null},"password":"Torres#2026"}
+{"message":"El email y password son requeridos"}  [HTTP 400]
+
+# signIn correcto: 200 con token
+$ curl -X POST localhost:3099/api/auth/signIn -H Content-Type: application/json -d {"email":"ana.torres@demo.pe","password":"Torres#2026"}
+{"token":"eyJhbGciO…(token recortado)"}  [HTTP 200]
+
+# Payloads decodificados de los tokens (usuario y admin sembrado por seedUsers):
+{"sub":"6ac1164f81c023f8c2bd705e","roles":["user"],"iat":1791039055,"exp":1791042655}
+{"sub":"6ac1164e81c023f8c2bd705a","roles":["admin"],"iat":1791039055,"exp":1791042655}
+
+# GET /api/users/me (user): datos completos con edad y sin password
+$ curl localhost:3099/api/users/me -H Authorization: Bearer <token>
+{"id":"6ac1164f81c023f8c2bd705e","name":"Ana","lastName":"Torres","email":"ana.torres@demo.pe","phoneNumber":"987654321","birthdate":"2001-04-12T00:00:00.000Z","age":25,"url_profile":"","address":"","roles":["user"],"createdAt":"2026-10-03T14:50:55.304Z","updatedAt":"2026-10-03T14:50:55.304Z"}  [HTTP 200]
+
+# PUT /api/users/me: lista blanca (email y roles enviados se ignoran)
+$ curl -X PUT localhost:3099/api/users/me -H Authorization: Bearer <token> -H Content-Type: application/json -d {"address":"Av. Arequipa 1200","url_profile":"https://example.com/ana.png","email":"hack@demo.pe","roles":["admin"]}
+{"id":"6ac1164f81c023f8c2bd705e","name":"Ana","lastName":"Torres","email":"ana.torres@demo.pe","phoneNumber":"987654321","birthdate":"2001-04-12T00:00:00.000Z","age":25,"url_profile":"https://example.com/ana.png","address":"Av. Arequipa 1200","roles":["user"],"createdAt":"2026-10-03T14:50:55.304Z","updatedAt":"2026-10-03T14:50:55.859Z"}  [HTTP 200]
+
+# PUT /api/users/me con URL javascript: (400)
+$ curl -X PUT localhost:3099/api/users/me -H Authorization: Bearer <token> -H Content-Type: application/json -d {"url_profile":"javascript:alert(1)"}
+{"message":"Hay datos inválidos","errors":["La URL de perfil debe empezar con http:// o https://"]}  [HTTP 400]
+
+# PUT /api/users/me cambio de contraseña sin la actual (400, no 401)
+$ curl -X PUT localhost:3099/api/users/me -H Authorization: Bearer <token> -H Content-Type: application/json -d {"password":"Nueva#2026"}
+{"message":"La contraseña actual no es correcta"}  [HTTP 400]
+
+# GET /api/users con token de user: 403
+$ curl localhost:3099/api/users -H Authorization: Bearer <token>
+{"message":"Prohibido: permisos insuficientes"}  [HTTP 403]
+
+# GET /api/users/:id con token de user: 403
+$ curl localhost:3099/api/users/6ac1164f81c023f8c2bd705e -H Authorization: Bearer <token>
+{"message":"Prohibido: permisos insuficientes"}  [HTTP 403]
+
+# GET /api/users con token de admin: 200 (sin password)
+$ curl localhost:3099/api/users -H Authorization: Bearer <token>
+[{"id":"6ac1164f81c023f8c2bd705e","name":"Ana","lastName":"Torres","email":"ana.torres@demo.pe","phoneNumber":"987654321","birthdate":"2001-04-12T00:00:00.000Z","age":25,"url_profile":"https://example.com/ana.png","address":"Av. Arequipa 1200","roles":["user"],"createdAt":"2026-10-03T14:50:55.304Z","updatedAt":"2026-10-03T14:50:55.859Z"},{"id":"6ac1164e81c023f8c2bd705a","name":"Administrador","lastName":"Principal","email":"admin@lab07.pe","phoneNumber":"999000000","birthdate":"1990-01-01T00:00:00.000Z","age":36,"url_profile":"","address":"","roles":["admin"],"createdAt":"2026-10-03T14:50:54.943Z","updatedAt":"2026-10-03T14:50:54.943Z"}]  [HTTP 200]
+
+# GET /api/users/:id con token de admin: 200
+$ curl localhost:3099/api/users/6ac1164f81c023f8c2bd705e -H Authorization: Bearer <token>
+{"id":"6ac1164f81c023f8c2bd705e","name":"Ana","lastName":"Torres","email":"ana.torres@demo.pe","phoneNumber":"987654321","birthdate":"2001-04-12T00:00:00.000Z","age":25,"url_profile":"https://example.com/ana.png","address":"Av. Arequipa 1200","roles":["user"],"createdAt":"2026-10-03T14:50:55.304Z","updatedAt":"2026-10-03T14:50:55.859Z"}  [HTTP 200]
+
+# GET /api/users/:id inexistente: 404
+$ curl localhost:3099/api/users/000000000000000000000000 -H Authorization: Bearer <token>
+{"message":"Usuario no encontrado"}  [HTTP 404]
+
+# Sin cabecera Authorization: 401
+$ curl localhost:3099/api/users/me
+{"message":"No autorizado"}  [HTTP 401]
+
+# Token caducado (firmado con la clave real, exp en el pasado): 401
+$ curl localhost:3099/api/users/me -H Authorization: Bearer <token>
+{"message":"Token no válido o caducado"}  [HTTP 401]
+
+# Token sin firma (alg none) con roles admin: 401
+$ curl localhost:3099/api/users -H Authorization: Bearer <token>
+{"message":"Token no válido o caducado"}  [HTTP 401]
+
+# Ruta de API inexistente: 404 en JSON
+$ curl localhost:3099/api/nada
+{"message":"Ruta no encontrada: GET /api/nada"}  [HTTP 404]
+
+# Páginas
+/signIn                HTTP 200 text/html; charset=utf-8
+/signUp                HTTP 200 text/html; charset=utf-8
+/dashboard             HTTP 200 text/html; charset=utf-8
+/profile               HTTP 200 text/html; charset=utf-8
+/admin/dashboard       HTTP 200 text/html; charset=utf-8
+/403                   HTTP 403 text/html; charset=utf-8
+/pagina-inexistente    HTTP 404 text/html; charset=utf-8
+
+# La página /admin/dashboard responde 200 a cualquiera: el servidor no ve sessionStorage.
+# La protege auth.js en el navegador y, sobre todo, GET /api/users (403 sin rol admin).

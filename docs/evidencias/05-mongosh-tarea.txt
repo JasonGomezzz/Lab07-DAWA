@@ -1,0 +1,81 @@
+# Evidencia de la tarea: base auth_db con mongosh (los hashes se recortan en la proyección)
+# Fecha: 2026-10-03 09:51 · MongoDB 8.0.32
+
+> show dbs
+> use auth_db
+> db.roles.find().pretty()
+> db.users.find({}, { name: 1, lastName: 1, email: 1, phoneNumber: 1, birthdate: 1, url_profile: 1, address: 1, roles: 1, createdAt: 1, password: { $concat: [ { $substrCP: ["$password", 0, 7] }, "…(hash recortado)" ] } }).pretty()
+> db.users.countDocuments()
+
+test> admin         40.00 KiB
+auth_db      168.00 KiB
+config       116.00 KiB
+local         40.00 KiB
+socialmedia  180.00 KiB
+test> switched to db auth_db
+auth_db> [
+  {
+    _id: ObjectId('6ac10f0dd26f7db68f39ac8b'),
+    name: 'user',
+    createdAt: ISODate('2026-10-03T14:19:57.905Z'),
+    updatedAt: ISODate('2026-10-03T14:19:57.905Z'),
+    __v: 0
+  },
+  {
+    _id: ObjectId('6ac10f0dd26f7db68f39ac8d'),
+    name: 'admin',
+    createdAt: ISODate('2026-10-03T14:19:57.911Z'),
+    updatedAt: ISODate('2026-10-03T14:19:57.911Z'),
+    __v: 0
+  }
+]
+auth_db> [
+  {
+    _id: ObjectId('6ac110839e2bffcdc493ef4a'),
+    name: 'Administrador',
+    lastName: 'Principal',
+    email: 'admin@lab07.pe',
+    phoneNumber: '999000000',
+    birthdate: ISODate('1990-01-01T00:00:00.000Z'),
+    roles: [ ObjectId('6ac10f0dd26f7db68f39ac8d') ],
+    createdAt: ISODate('2026-10-03T14:26:11.106Z'),
+    password: '$2b$10$…(hash recortado)'
+  },
+  {
+    _id: ObjectId('6ac113465d66c3d03effa28a'),
+    name: 'María',
+    lastName: 'Quispe Rojas',
+    email: 'maria.quispe@lab07.pe',
+    phoneNumber: '987 654 321',
+    birthdate: ISODate('1999-05-21T00:00:00.000Z'),
+    roles: [ ObjectId('6ac10f0dd26f7db68f39ac8b') ],
+    createdAt: ISODate('2026-10-03T14:37:58.038Z'),
+    address: 'Jr. Junín 456, Cercado de Lima',
+    password: '$2b$10$…(hash recortado)'
+  },
+  {
+    _id: ObjectId('6ac114f9cab856913a09edf5'),
+    name: 'Luis Alberto',
+    lastName: 'Huamán Torres',
+    email: 'luis.huaman@lab07.pe',
+    phoneNumber: '+51 912 345 678',
+    birthdate: ISODate('2003-08-14T00:00:00.000Z'),
+    address: 'Av. Cascanueces 210, Santa Anita',
+    roles: [ ObjectId('6ac10f0dd26f7db68f39ac8b') ],
+    createdAt: ISODate('2026-10-03T14:45:13.989Z'),
+    password: '$2b$10$…(hash recortado)'
+  },
+  {
+    _id: ObjectId('6ac114facab856913a09edf9'),
+    name: 'Rosa',
+    lastName: 'Mamani Ccori',
+    email: 'rosa.mamani@lab07.pe',
+    phoneNumber: '956-112-334',
+    birthdate: ISODate('1994-02-03T00:00:00.000Z'),
+    roles: [ ObjectId('6ac10f0dd26f7db68f39ac8b') ],
+    createdAt: ISODate('2026-10-03T14:45:14.054Z'),
+    password: '$2b$10$…(hash recortado)'
+  }
+]
+auth_db> 4
+auth_db> 
