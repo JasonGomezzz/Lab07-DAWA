@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Evidencias del procedimiento · Lab 07 DAWA</title>
+<style>
+  :root { --paper:#f2ede1; --ink:#141c33; --muted:#4b5169; --cover:#6a1b2c; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--paper); color:var(--ink); font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif; }
+  main { max-width:980px; margin:auto; padding:40px 16px 64px; }
+  h1 { font-size:clamp(30px,5vw,48px); letter-spacing:-.03em; line-height:1.05; margin:0 0 8px; }
+  h1 em { font-family:Georgia,serif; font-weight:400; color:var(--cover); }
+  .lede { color:var(--muted); margin:0 0 36px; }
+  section { margin-bottom:44px; border-top:2px solid var(--ink); padding-top:16px; }
+  h2 { font-size:22px; margin:0 0 4px; }
+  .hint { color:var(--muted); margin:0 0 14px; font-size:14px; }
+  .term { background:#11151f; color:#e6e1d4; border-radius:8px; overflow:hidden; box-shadow:0 24px 48px -28px rgba(20,28,51,.6); }
+  .bar { display:flex; align-items:center; gap:7px; padding:10px 14px; background:#1c2230; }
+  .bar span { width:11px; height:11px; border-radius:50%; background:#ff5f57; }
+  .bar span:nth-child(2) { background:#febc2e; } .bar span:nth-child(3) { background:#28c840; }
+  .bar b { margin-left:10px; font:500 12px ui-monospace,Menlo,monospace; color:#9aa3b5; }
+  pre { margin:0; padding:18px 20px; overflow-x:auto; font:13px/1.6 ui-monospace,"SF Mono",Menlo,monospace; white-space:pre; }
+  footer { color:var(--muted); font-size:13px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Evidencias del <em>procedimiento.</em></h1>
+  <p class="lede">Laboratorio 07 · Seguridad en aplicaciones con JWT. Salidas reales capturadas en la máquina local el 03/10/2026 (Node 22.18, MongoDB 8.0).</p>
+  <section>
+  <h2>Iniciar el servidor</h2>
+  <p class="hint">Comando: <code>npm run dev</code> (primer arranque con siembra de roles y arranque con nodemon).</p>
+  <div class="term"><div class="bar"><span></span><span></span><span></span><b>01-npm-run-dev.txt</b></div><pre># Evidencia del procedimiento: iniciar el servidor
+# Fecha: 2026-10-03 09:21 · Node v22.18.0 · MongoDB 8.0 local (brew services)
+
+# Primer arranque, con auth_db sin roles: seedRoles los crea.
+$ node src/server.js
+Mongo connected
+Seeded roles: user, admin
+Servidor corriendo en el puerto 3000
+
+# Arranque en modo desarrollo (los roles ya existen, seedRoles no repite la inserción):
+$ npm run dev
+
+&gt; express-mongo-auth@1.0.0 dev
+&gt; nodemon --watch src src/server.js
+
+[nodemon] 3.1.14
+[nodemon] to restart at any time, enter `rs`
+[nodemon] watching path(s): src/**/*
+[nodemon] watching extensions: js,mjs,cjs,json
+[nodemon] starting `node src/server.js`
+Mongo connected
+Servidor corriendo en el puerto 3000
+
+$ curl -s localhost:3000/health
+{&quot;ok&quot;:true}
+</pre></div>
+</section>
+  <section>
+  <h2>Consultar los datos con mongosh</h2>
+  <p class="hint">Comandos: <code>show dbs</code>, <code>use auth_db</code>, <code>db.roles.find().pretty()</code>.</p>
+  <div class="term"><div class="bar"><span></span><span></span><span></span><b>02-mongosh-roles.txt</b></div><pre># Evidencia del procedimiento: consulta de roles con mongosh
+# Fecha: 2026-10-03 09:20 · mongosh 2.12.0 · MongoDB 8.0.32
+
+&gt; show dbs
+&gt; use auth_db
+&gt; db.roles.find().pretty()
+
+test&gt; admin         40.00 KiB
+auth_db       24.00 KiB
+config        60.00 KiB
+local         40.00 KiB
+socialmedia  180.00 KiB
+test&gt; switched to db auth_db
+auth_db&gt; [
+  {
+    _id: ObjectId(&#x27;6ac10f0dd26f7db68f39ac8b&#x27;),
+    name: &#x27;user&#x27;,
+    createdAt: ISODate(&#x27;2026-10-03T14:19:57.905Z&#x27;),
+    updatedAt: ISODate(&#x27;2026-10-03T14:19:57.905Z&#x27;),
+    __v: 0
+  },
+  {
+    _id: ObjectId(&#x27;6ac10f0dd26f7db68f39ac8d&#x27;),
+    name: &#x27;admin&#x27;,
+    createdAt: ISODate(&#x27;2026-10-03T14:19:57.911Z&#x27;),
+    updatedAt: ISODate(&#x27;2026-10-03T14:19:57.911Z&#x27;),
+    __v: 0
+  }
+]
+auth_db&gt; </pre></div>
+</section>
+  <footer>Repositorio: github.com/JasonGomezzz/Lab07-DAWA · archivos fuente en docs/evidencias/</footer>
+</main>
+</body>
+</html>
