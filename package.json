@@ -1,0 +1,35 @@
+{
+  "name": "express-mongo-auth",
+  "version": "1.0.0",
+  "description": "API de autenticación con JWT, roles y frontend EJS + Materialize (Lab 07 DAWA)",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon --watch src src/server.js",
+    "test": "node --test"
+  },
+  "keywords": [
+    "express",
+    "mongodb",
+    "jwt",
+    "ejs",
+    "materialize"
+  ],
+  "author": "Jason Gomez",
+  "license": "ISC",
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.6",
+    "dotenv": "^16.6.1",
+    "express": "^4.22.3",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^7.8.12"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}
