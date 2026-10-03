@@ -70,7 +70,15 @@ mongoose.connect(process.env.MONGODB_URI, { autoIndex: true })
         console.log('Mongo connected');
         await seedRoles();
         await seedUsers();
-        app.listen(PORT, () => console.log(`Servidor corriendo en el puerto ${PORT}`));
+        const server = app.listen(PORT, () => console.log(`Servidor corriendo en el puerto ${PORT}`));
+        server.on('error', (err) => {
+            if (err.code === 'EADDRINUSE') {
+                console.error(`El puerto ${PORT} ya está en uso por otro proceso. Ciérralo (lsof -i :${PORT}) o cambia PORT en .env.`);
+            } else {
+                console.error('No se pudo iniciar el servidor:', err);
+            }
+            process.exit(1);
+        });
     })
     .catch(err => {
         console.error('Error al conectar con Mongo:', err);
