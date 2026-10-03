@@ -18,8 +18,16 @@ class UserRepository {
         return User.findByIdAndUpdate(id, { password: hashedPassword }, { new: true }).exec();
     }
 
+    // runValidators para que las reglas del esquema también apliquen al editar.
+    async updateById(id, update) {
+        return User.findByIdAndUpdate(id, update, { new: true, runValidators: true })
+            .populate('roles')
+            .exec();
+    }
+
+    // El listado nunca necesita el hash: se excluye desde la consulta.
     async getAll() {
-        return User.find().populate('roles').exec();
+        return User.find().select('-password').populate('roles').sort({ createdAt: -1 }).exec();
     }
 }
 
