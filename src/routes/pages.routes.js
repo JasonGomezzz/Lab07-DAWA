@@ -20,6 +20,11 @@ router.get('/profile', page('profile', { title: 'Mi cuenta', guard: 'user', nav:
 // Solo rol admin
 router.get('/admin/dashboard', page('admin/dashboard', { title: 'Registro de titulares', guard: 'admin', nav: 'app', current: 'admin' }));
 
+// A esta página redirige auth.js cuando el token no tiene el rol suficiente
+router.get('/403', (req, res) => {
+    res.status(403).render('403', { title: 'Acceso denegado', guard: 'public', nav: 'auto' });
+});
+
 export function pageNotFound(req, res) {
     res.status(404).render('404', {
         title: 'Página no encontrada',

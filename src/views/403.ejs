@@ -1,0 +1,30 @@
+<%- include('partials/head', { styles: ['pages/errors'] }) %>
+<%- include('partials/header') %>
+
+<main id="contenido" class="shell error-page">
+  <div class="error-page__copy">
+    <h1 class="display">Este pase no abre <em>esta puerta.</em></h1>
+    <p class="lede">
+      La página <span class="path-tag mono" data-from>que intentaste abrir</span> pide un rol
+      que tu cuenta no tiene. Si crees que es un error, pide a un administrador que revise tu acceso.
+    </p>
+    <p class="role-line" data-role-line hidden>Tu pase actual: <span data-my-roles></span></p>
+    <div class="error-page__actions">
+      <a class="btn btn-ink" href="/" data-home-link>
+        <span data-label>Volver a mi panel</span><svg class="icon icon-arrow"><use href="#i-arrow"/></svg>
+      </a>
+      <button type="button" class="text-link" data-action="switch-account" hidden>Ingresar con otra cuenta</button>
+    </div>
+  </div>
+
+  <div class="error-art error-art--403" aria-hidden="true">
+    <div class="doc-lines"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+    <div class="stamp">
+      <span class="stamp__word">DENEGADO</span>
+      <span class="stamp__sub">ACCESO · 403</span>
+    </div>
+    <span class="doc-meta mono" data-required>Rol requerido: admin<br>Solicitud rechazada</span>
+  </div>
+</main>
+
+<%- include('partials/footer', { script: 'error' }) %>

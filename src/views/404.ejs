@@ -9,7 +9,9 @@
       Revisa la dirección o vuelve al inicio; tu sesión sigue donde la dejaste.
     </p>
     <div class="error-page__actions">
-      <a class="btn btn-ink" href="/" data-home-link>Volver al inicio <svg class="icon icon-arrow"><use href="#i-arrow"/></svg></a>
+      <a class="btn btn-ink" href="/" data-home-link>
+        <span data-label>Volver al inicio</span><svg class="icon icon-arrow"><use href="#i-arrow"/></svg>
+      </a>
     </div>
   </div>
 
@@ -20,4 +22,4 @@
   </div>
 </main>
 
-<%- include('partials/footer') %>
+<%- include('partials/footer', { script: 'error' }) %>
