@@ -10,6 +10,13 @@ import seedRoles from './utils/seedRoles.js';
 import seedUsers from './utils/seedUsers.js';
 import errorHandler, { apiNotFound } from './middlewares/errorHandler.js';
 
+// Sin estas variables el servidor arrancaría y fallaría recién al firmar el primer token.
+const missing = ['MONGODB_URI', 'JWT_SECRET'].filter((name) => !process.env[name]);
+if (missing.length) {
+    console.error(`Faltan variables de entorno: ${missing.join(', ')}. Copia .env.example a .env y complétalo.`);
+    process.exit(1);
+}
+
 const app = express();
 
 // Habilitar CORS para todos
