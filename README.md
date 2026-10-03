@@ -53,7 +53,6 @@ Todas están documentadas en [`.env.example`](.env.example). El archivo `.env` r
 
 ```text
 Lab07-DAWA/
-├── docs/evidencias/           # Salidas reales de npm run dev, mongosh y pruebas con curl
 ├── src/
 │   ├── controllers/           # AuthController, UserController
 │   ├── middlewares/           # authenticate, authorize, errorHandler
@@ -75,11 +74,7 @@ Lab07-DAWA/
 
 ## Procedimiento del documento
 
-El historial de commits sigue el orden del documento: modelos `Role` y `User`, repositorios, servicios, controladores, middlewares `authenticate` y `authorize`, rutas, `seedRoles` y `server.js`. Antes de la tarea, la API respondía así (salidas reales):
-
-- [`01-npm-run-dev.txt`](docs/evidencias/01-npm-run-dev.txt): arranque con `npm run dev` y siembra de roles.
-- [`02-mongosh-roles.txt`](docs/evidencias/02-mongosh-roles.txt): `show dbs`, `use auth_db` y `db.roles.find().pretty()`.
-- [`03-api-procedimiento.txt`](docs/evidencias/03-api-procedimiento.txt): prueba de la API del documento. Muestra dos fallas que la tarea corrige: el registro público aceptaba `roles: ["admin"]` y `GET /api/users` devolvía el hash de cada contraseña.
+El historial de commits sigue el orden del documento: modelos `Role` y `User`, repositorios, servicios, controladores, middlewares `authenticate` y `authorize`, rutas, `seedRoles` y `server.js`. Con `npm run dev` el servidor se conecta a `auth_db`, siembra los roles `user` y `admin`, y queda escuchando en el puerto 3000. Los roles se consultan con `show dbs`, `use auth_db` y `db.roles.find().pretty()`.
 
 ## Tarea
 
@@ -141,8 +136,7 @@ Salvoconducto pertenece a la misma familia editorial que la Bitácora del Lab 06
 1. `npm test`: 36 pruebas de política de contraseña, cálculo de edad, `authenticate`, `authorize` y el manejador de errores.
 2. Flujo manual: crea una cuenta en `/signUp`, ingresa y revisa `/dashboard` y `/profile`. Luego intenta abrir `/admin/dashboard` (debe enviarte a `/403`). Cierra sesión e ingresa con el administrador de `.env` para ver el registro.
 3. Expiración rápida: pon `JWT_EXPIRES_IN=1m` en `.env`, reinicia, ingresa y espera un minuto. La sesión se cierra sola y `/signIn` muestra "Tu sesión caducó".
-4. API con curl: [`04-api-tarea.txt`](docs/evidencias/04-api-tarea.txt) reúne 22 casos (registro, política, duplicados, `/me`, 403 de user, 200 de admin, token caducado, token sin firma y 404) y el estado HTTP de cada página.
-5. Base de datos: [`05-mongosh-tarea.txt`](docs/evidencias/05-mongosh-tarea.txt). En Compass, conéctate a `mongodb://localhost:27017` y abre `auth_db` → `roles` y `users`.
+4. Base de datos: en Compass, conéctate a `mongodb://localhost:27017` y abre `auth_db` → `roles` y `users` (o usa `mongosh`).
 
 ## Desviaciones respecto al enunciado
 
