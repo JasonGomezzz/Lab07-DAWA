@@ -1,11 +1,14 @@
 import authService from '../services/AuthService.js';
 
+// Solo se aceptan textos: un objeto como {"$ne": null} nunca debe llegar a la consulta.
+const isText = (value) => typeof value === 'string' && value.trim() !== '';
+
 class AuthController {
 
     async signUp(req, res, next) {
         try {
-            const payload = req.body;
-            if (!payload.email || !payload.password)
+            const payload = req.body ?? {};
+            if (!isText(payload.email) || !isText(payload.password))
                 return res.status(400).json({ message: 'El email y password son requeridos' });
 
             const user = await authService.signUp(payload);
@@ -17,9 +20,9 @@ class AuthController {
 
     async signIn(req, res, next) {
         try {
-            const { email, password } = req.body;
+            const { email, password } = req.body ?? {};
 
-            if (!email || !password)
+            if (!isText(email) || !isText(password))
                 return res.status(400).json({ message: 'El email y password son requeridos' });
 
             const token = await authService.signIn({ email, password });
