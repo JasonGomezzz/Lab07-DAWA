@@ -106,6 +106,13 @@ export function clearFieldErrors(form) {
     form.querySelectorAll('input').forEach((input) => setFieldError(input, ''));
 }
 
+// El error de un campo desaparece apenas la persona lo corrige.
+export function clearErrorsOnInput(form) {
+    form.addEventListener('input', (event) => {
+        if (event.target.getAttribute('aria-invalid') === 'true') setFieldError(event.target, '');
+    });
+}
+
 // Muestra un aviso con título y lista opcional (texto plano, nunca HTML del servidor).
 export function showNotice(container, { kind = 'error', title, items = [] }) {
     container.replaceChildren();

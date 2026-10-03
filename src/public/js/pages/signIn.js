@@ -1,6 +1,6 @@
 import { guardPage, apiFetch, saveToken, getSession, homeFor } from '../auth.js';
 import {
-    boot, initChrome, setBusy, showNotice, setFieldError, clearFieldErrors, bindPasswordToggles
+    boot, initChrome, setBusy, showNotice, setFieldError, clearFieldErrors, bindPasswordToggles, clearErrorsOnInput
 } from '../ui.js';
 
 const LAST_EMAIL_KEY = 'salvoconducto.lastEmail';
@@ -34,6 +34,7 @@ boot(async () => {
     }
 
     bindPasswordToggles(form);
+    clearErrorsOnInput(form);
 
     form.addEventListener('submit', async (event) => {
         event.preventDefault();
