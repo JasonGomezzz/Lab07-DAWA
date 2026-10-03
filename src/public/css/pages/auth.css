@@ -17,20 +17,6 @@
 
 .auth__panel { align-self: start; border-top: 2px solid var(--ink); }
 
-.panel-head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 28px;
-  padding: 20px 0;
-  border-bottom: 1px solid var(--line);
-}
-.panel-head h2 { font-size: 22px; font-weight: 600; letter-spacing: -.02em; }
-.panel-head .meta { font-size: 12px; color: var(--ink-soft); white-space: nowrap; }
-
-[data-notice] { margin-bottom: 24px; }
-
 .auth__switch {
   margin-top: 32px;
   padding-top: 22px;
@@ -38,10 +24,6 @@
   font-size: 14px;
   color: var(--ink-soft);
 }
-
-.input-field .supporting-text:empty { display: none; }
-
-.age-hint { font-family: var(--font-mono); font-size: 12px; color: var(--ink-soft); }
 
 /* Tapa de pasaporte decorativa */
 .passport-cover {

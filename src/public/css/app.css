@@ -179,6 +179,21 @@ body.is-guarded.is-ready main { opacity: 1; transition: opacity .35s var(--ease-
   letter-spacing: -.02em;
 }
 
+/* Cabecera de un bloque de formulario: título y endpoint que usa */
+.panel-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 28px;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--line);
+}
+.panel-head h2 { font-size: 22px; font-weight: 600; letter-spacing: -.02em; }
+.panel-head .meta { font-size: 12px; color: var(--ink-soft); white-space: nowrap; }
+
+[data-notice] { margin-bottom: 24px; }
+
 /* --- Encabezado ------------------------------------------------------------ */
 
 .site-header { border-bottom: 1px solid var(--ink); background: var(--paper); }
@@ -425,6 +440,7 @@ body.is-guarded.is-ready main { opacity: 1; transition: opacity .35s var(--ease-
   line-height: 1.45;
   color: var(--ink-soft);
 }
+.input-field .supporting-text:empty { display: none; }
 .input-field.has-error input { border-color: var(--denied); }
 .input-field.has-error input:focus:not([readonly]) { box-shadow: 0 0 0 3px rgba(179, 52, 29, .16); border-color: var(--denied); }
 .input-field.has-error .supporting-text { color: var(--denied); }
@@ -449,6 +465,7 @@ body.is-guarded.is-ready main { opacity: 1; transition: opacity .35s var(--ease-
 .affix-btn:hover { color: var(--ink); background: var(--paper-deep); }
 
 .form-stack { display: grid; gap: 22px; }
+.age-hint { font-family: var(--font-mono); font-size: 12px; color: var(--ink-soft); }
 .form-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 22px; margin-top: 8px; }
 
 /* Checklist de la política de contraseña */
