@@ -1,0 +1,140 @@
+<%- include('partials/head', { styles: ['pages/profile'] }) %>
+<%- include('partials/header') %>
+
+<main id="contenido" class="shell">
+  <section class="page-head">
+    <div>
+      <h1 class="display">Mi <em>cuenta.</em></h1>
+      <p class="lede">
+        Revisa tus datos y corrígelos cuando cambien. El correo y el rol los custodia
+        el sistema, así que aquí solo se muestran.
+      </p>
+    </div>
+  </section>
+
+  <div class="profile-grid">
+    <aside class="profile-card is-loading" aria-label="Resumen de tu cuenta" data-summary-card>
+      <div class="avatar avatar--profile" data-avatar></div>
+      <p class="profile-card__name" data-summary="fullName"></p>
+      <p class="profile-card__email mono" data-summary="email"></p>
+      <div class="profile-card__roles" data-summary="roles"></div>
+      <dl class="profile-card__meta">
+        <div><dt>Edad</dt><dd class="mono" data-summary="age"></dd></div>
+        <div><dt>Miembro desde</dt><dd class="mono" data-summary="createdAt"></dd></div>
+        <div><dt>Última edición</dt><dd class="mono" data-summary="updatedAt"></dd></div>
+        <div><dt>Identificador</dt><dd class="mono" data-summary="id"></dd></div>
+      </dl>
+    </aside>
+
+    <div class="profile-forms">
+      <section aria-labelledby="datos-titulo">
+        <div class="panel-head">
+          <h2 id="datos-titulo">Datos personales</h2>
+          <span class="meta mono">PUT /api/users/me</span>
+        </div>
+        <div data-notice="perfil" hidden></div>
+
+        <form id="form-perfil" class="form-stack" novalidate>
+          <div class="row">
+            <div class="input-field col s12 m6">
+              <label for="name">Nombre</label>
+              <input id="name" name="name" autocomplete="given-name" required maxlength="60">
+              <span class="supporting-text"></span>
+            </div>
+            <div class="input-field col s12 m6">
+              <label for="lastName">Apellido</label>
+              <input id="lastName" name="lastName" autocomplete="family-name" required maxlength="60">
+              <span class="supporting-text"></span>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="input-field col s12 m6">
+              <label for="phoneNumber">Teléfono</label>
+              <input id="phoneNumber" name="phoneNumber" type="tel" inputmode="tel" autocomplete="tel" required maxlength="19">
+              <span class="supporting-text"></span>
+            </div>
+            <div class="input-field col s12 m6">
+              <label for="birthdate">Fecha de nacimiento <small class="age-hint" data-age-hint aria-live="polite"></small></label>
+              <input id="birthdate" name="birthdate" type="date" required>
+              <span class="supporting-text"></span>
+            </div>
+          </div>
+
+          <div class="input-field">
+            <label for="url_profile">URL de foto de perfil <small>Opcional</small></label>
+            <input id="url_profile" name="url_profile" type="url" inputmode="url" placeholder="https://…">
+            <span class="supporting-text">Un enlace http(s) a una imagen. La vista previa aparece en tu tarjeta.</span>
+          </div>
+
+          <div class="input-field">
+            <label for="address">Dirección <small>Opcional</small></label>
+            <input id="address" name="address" autocomplete="street-address" maxlength="120" placeholder="Av. Ejemplo 123, Lima">
+            <span class="supporting-text"></span>
+          </div>
+
+          <div class="row">
+            <div class="input-field col s12 m6">
+              <label for="email">Correo electrónico <small class="locked"><svg class="icon"><use href="#i-lock"/></svg>No editable</small></label>
+              <input id="email" type="email" readonly tabindex="-1">
+            </div>
+            <div class="input-field col s12 m6">
+              <label for="roles">Rol <small class="locked"><svg class="icon"><use href="#i-lock"/></svg>Lo asigna el sistema</small></label>
+              <input id="roles" readonly tabindex="-1">
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn-ink" disabled>
+              <span data-label>Guardar cambios</span>
+              <svg class="icon"><use href="#i-check"/></svg>
+            </button>
+            <button type="button" class="text-link" data-action="discard" hidden>Descartar cambios</button>
+          </div>
+        </form>
+      </section>
+
+      <section aria-labelledby="clave-titulo">
+        <div class="panel-head">
+          <h2 id="clave-titulo">Contraseña</h2>
+          <span class="meta mono">PUT /api/users/me</span>
+        </div>
+        <div data-notice="clave" hidden></div>
+
+        <form id="form-clave" class="form-stack" novalidate>
+          <div class="input-field">
+            <label for="currentPassword">Contraseña actual</label>
+            <div class="input-affix">
+              <input id="currentPassword" name="currentPassword" type="password" autocomplete="current-password" required>
+              <button type="button" class="affix-btn" data-toggle-password="currentPassword" aria-label="Mostrar contraseña" aria-pressed="false">
+                <svg class="icon"><use href="#i-eye"/></svg>
+              </button>
+            </div>
+            <span class="supporting-text"></span>
+          </div>
+
+          <div class="input-field">
+            <label for="password">Nueva contraseña</label>
+            <div class="input-affix">
+              <input id="password" name="password" type="password" autocomplete="new-password" required aria-describedby="reglas-password">
+              <button type="button" class="affix-btn" data-toggle-password="password" aria-label="Mostrar contraseña" aria-pressed="false">
+                <svg class="icon"><use href="#i-eye"/></svg>
+              </button>
+            </div>
+            <span class="supporting-text"></span>
+            <ul id="reglas-password" class="password-rules" data-password-rules aria-label="Requisitos de la contraseña"></ul>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn-line">
+              <span data-label>Cambiar contraseña</span>
+              <svg class="icon"><use href="#i-key"/></svg>
+            </button>
+          </div>
+        </form>
+      </section>
+    </div>
+  </div>
+</main>
+
+<%- include('partials/footer', { script: 'profile' }) %>

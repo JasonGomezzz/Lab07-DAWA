@@ -15,6 +15,7 @@ router.get('/signUp', page('signUp', { title: 'Crear cuenta', guard: 'guest', na
 
 // Rol user o superior (admin también entra)
 router.get('/dashboard', page('dashboard', { title: 'Mi panel', guard: 'user', nav: 'app', current: 'dashboard' }));
+router.get('/profile', page('profile', { title: 'Mi cuenta', guard: 'user', nav: 'app', current: 'profile' }));
 
 export function pageNotFound(req, res) {
     res.status(404).render('404', {
