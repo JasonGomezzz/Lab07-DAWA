@@ -1,0 +1,90 @@
+<%- include('../partials/head', { styles: ['pages/admin'] }) %>
+<%- include('../partials/header') %>
+
+<main id="contenido" class="shell">
+  <section class="page-head">
+    <div>
+      <h1 class="display">Registro de <em>titulares.</em></h1>
+      <p class="lede">
+        Todas las cuentas de <span class="mono">auth_db</span>, de la más reciente a la más
+        antigua. Solo un token con rol admin puede leer esta lista.
+      </p>
+    </div>
+    <div class="page-head__actions">
+      <a class="btn btn-line" href="/dashboard"><span>Mi panel</span><svg class="icon"><use href="#i-panel"/></svg></a>
+    </div>
+  </section>
+
+  <p class="ledger-summary" data-summary aria-live="polite">Leyendo el registro…</p>
+
+  <div class="ledger-tools">
+    <div class="ledger-search">
+      <label for="buscar" class="sr-only">Buscar titular</label>
+      <svg class="icon"><use href="#i-search"/></svg>
+      <input id="buscar" type="search" placeholder="Buscar por nombre, apellido o correo" autocomplete="off" spellcheck="false">
+    </div>
+    <div class="segmented" role="group" aria-label="Filtrar por rol">
+      <button type="button" data-filter="all" aria-pressed="true">Todos <span class="mono" data-count="all">0</span></button>
+      <button type="button" data-filter="user" aria-pressed="false">Usuarios <span class="mono" data-count="user">0</span></button>
+      <button type="button" data-filter="admin" aria-pressed="false">Admins <span class="mono" data-count="admin">0</span></button>
+    </div>
+  </div>
+
+  <div data-notice hidden></div>
+
+  <div class="ledger-wrap">
+    <table class="highlight ledger" aria-describedby="buscar">
+      <caption class="sr-only">Usuarios registrados en auth_db</caption>
+      <thead>
+        <tr>
+          <th scope="col">N.º</th>
+          <th scope="col">Titular</th>
+          <th scope="col">Teléfono</th>
+          <th scope="col">Edad</th>
+          <th scope="col">Rol</th>
+          <th scope="col">Registro</th>
+          <th scope="col"><span class="sr-only">Acciones</span></th>
+        </tr>
+      </thead>
+      <tbody data-rows>
+        <% for (let i = 0; i < 4; i++) { %>
+        <tr class="row-skeleton" aria-hidden="true"><td colspan="7"><span></span></td></tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+</main>
+
+<dialog id="ficha" class="modal" aria-labelledby="ficha-titulo">
+  <div class="modal-header">
+    <div>
+      <p class="ficha__id mono" data-detail="id"></p>
+      <h2 id="ficha-titulo" class="ficha__name" data-detail="fullName">Titular</h2>
+    </div>
+    <button type="button" class="modal-x modal-close" aria-label="Cerrar ficha">
+      <svg class="icon"><use href="#i-close"/></svg>
+    </button>
+  </div>
+  <div class="modal-content">
+    <div class="ficha" data-ficha>
+      <div class="avatar avatar--ficha" data-detail-avatar></div>
+      <dl class="ficha__fields">
+        <div class="span-2"><dt>Correo</dt><dd data-detail="email"></dd></div>
+        <div><dt>Teléfono</dt><dd class="mono" data-detail="phoneNumber"></dd></div>
+        <div><dt>Rol</dt><dd data-detail="roles"></dd></div>
+        <div><dt>Nacimiento</dt><dd class="mono" data-detail="birthdate"></dd></div>
+        <div><dt>Edad</dt><dd class="mono" data-detail="age"></dd></div>
+        <div class="span-2"><dt>Dirección</dt><dd data-detail="address"></dd></div>
+        <div class="span-2"><dt>Foto de perfil</dt><dd class="mono" data-detail="url_profile"></dd></div>
+        <div><dt>Registro</dt><dd class="mono" data-detail="createdAt"></dd></div>
+        <div><dt>Última edición</dt><dd class="mono" data-detail="updatedAt"></dd></div>
+      </dl>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <span class="mono muted ficha__endpoint" data-detail="endpoint">GET /api/users/:id</span>
+    <button type="button" class="btn btn-ink btn-sm modal-close"><span>Cerrar</span><svg class="icon"><use href="#i-close"/></svg></button>
+  </div>
+</dialog>
+
+<%- include('../partials/footer', { script: 'admin' }) %>
