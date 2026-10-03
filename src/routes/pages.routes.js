@@ -11,6 +11,7 @@ const page = (view, locals) => (req, res) => res.render(view, locals);
 router.get('/', (req, res) => res.redirect('/signIn'));
 
 router.get('/signIn', page('signIn', { title: 'Iniciar sesión', guard: 'guest', nav: 'guest', current: 'signIn' }));
+router.get('/signUp', page('signUp', { title: 'Crear cuenta', guard: 'guest', nav: 'guest', current: 'signUp' }));
 
 export function pageNotFound(req, res) {
     res.status(404).render('404', {
