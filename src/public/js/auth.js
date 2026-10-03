@@ -154,7 +154,9 @@ export async function apiFetch(path, { method = 'GET', body, auth = true } = {})
 
     const data = await response.json().catch(() => ({}));
 
-    if (auth && response.status === 401) logout('expirada');
+    // 401 con un token que el cliente aún cree vigente: firma alterada, usuario
+    // inexistente o reloj desfasado. Se cierra la sesión igual.
+    if (auth && response.status === 401) logout('invalida');
     if (auth && response.status === 403) go(`/403?desde=${encodeURIComponent(window.location.pathname)}`);
     if (!response.ok) {
         throw new ApiError(response.status, data.message || 'Ocurrió un error inesperado.', data.errors || []);

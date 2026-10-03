@@ -8,6 +8,7 @@ const LAST_EMAIL_KEY = 'salvoconducto.lastEmail';
 // Mensajes según el motivo con el que se llegó a /signIn.
 const REASONS = {
     expirada: { kind: 'info', title: 'Tu sesión caducó. Vuelve a ingresar para continuar.' },
+    invalida: { kind: 'error', title: 'El servidor rechazó tu token (caducado o alterado). Vuelve a ingresar.' },
     salida: { kind: 'ok', title: 'Cerraste sesión. El token se borró de esta pestaña.' },
     registro: { kind: 'ok', title: 'Cuenta creada. Ingresa con tu correo y contraseña.' },
     requerida: { kind: 'info', title: 'Inicia sesión para entrar a esa página.' }
