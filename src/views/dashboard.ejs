@@ -1,0 +1,89 @@
+<%- include('partials/head', { styles: ['pages/dashboard'] }) %>
+<%- include('partials/header') %>
+
+<main id="contenido" class="shell">
+  <section class="page-head">
+    <div>
+      <h1 class="display">Hola, <em data-first-name>titular.</em></h1>
+      <p class="lede">
+        Te damos la bienvenida: aquí están tus datos, tal como los guarda
+        <span class="mono">auth_db</span> y los entrega <span class="mono">GET /api/users/me</span>.
+      </p>
+    </div>
+    <div class="page-head__actions">
+      <a class="btn btn-line" href="/admin/dashboard" data-only-role="admin" hidden>
+        <span>Ir al registro</span><svg class="icon"><use href="#i-users"/></svg>
+      </a>
+      <a class="btn btn-ink" href="/profile">
+        <span>Editar mis datos</span><svg class="icon icon-arrow"><use href="#i-arrow"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <div class="dash-grid">
+    <article class="passport is-loading" aria-labelledby="pasaporte-titulo" aria-busy="true" data-passport>
+      <header class="passport__band">
+        <span id="pasaporte-titulo">Pase de acceso</span>
+        <span class="mono" data-field="docNumber">N.º ·········</span>
+      </header>
+
+      <div class="passport__body">
+        <div class="passport__photo">
+          <div class="avatar" data-avatar></div>
+          <div class="seal-stamp" aria-hidden="true">
+            <span class="seal-stamp__word">VIGENTE</span>
+            <span class="seal-stamp__time mono" data-stamp-time>HASTA --:--</span>
+          </div>
+        </div>
+
+        <dl class="passport__fields">
+          <div><dt>Apellidos</dt><dd data-field="lastName"></dd></div>
+          <div><dt>Nombres</dt><dd data-field="name"></dd></div>
+          <div><dt>Rol</dt><dd data-field="roles"></dd></div>
+          <div class="span-2"><dt>Correo</dt><dd data-field="email"></dd></div>
+          <div><dt>Teléfono</dt><dd class="mono" data-field="phoneNumber"></dd></div>
+          <div><dt>Nacimiento</dt><dd class="mono" data-field="birthdate"></dd></div>
+          <div><dt>Edad</dt><dd class="mono" data-field="age"></dd></div>
+          <div><dt>Registro</dt><dd class="mono" data-field="createdAt"></dd></div>
+          <div class="span-3"><dt>Dirección</dt><dd data-field="address"></dd></div>
+        </dl>
+      </div>
+
+      <pre class="passport__mrz mono" data-mrz aria-label="Zona de lectura mecánica generada con tus datos"></pre>
+    </article>
+
+    <aside class="dash-side">
+      <section class="side-block" aria-labelledby="vigencia-titulo">
+        <h2 id="vigencia-titulo" class="section-title">Vigencia del token</h2>
+        <p class="validity__clock mono" data-validity-left>--:--</p>
+        <div class="validity__bar" aria-hidden="true"><span data-validity-bar></span></div>
+        <p class="side-note" data-validity-text></p>
+      </section>
+
+      <section class="side-block" aria-labelledby="anatomia-titulo">
+        <h2 id="anatomia-titulo" class="section-title">Anatomía de tu token</h2>
+        <p class="side-note">
+          Un JWT son tres partes en base64url unidas por puntos. Las dos primeras se leen
+          sin ninguna clave; la firma solo la puede comprobar el servidor.
+        </p>
+        <p class="token-raw mono" data-token-raw></p>
+        <dl class="token-parts">
+          <div class="token-part token-part--header">
+            <dt>Encabezado</dt>
+            <dd><pre class="mono" data-token-header></pre></dd>
+          </div>
+          <div class="token-part token-part--payload">
+            <dt>Contenido</dt>
+            <dd><pre class="mono" data-token-payload></pre></dd>
+          </div>
+          <div class="token-part token-part--signature">
+            <dt>Firma</dt>
+            <dd><p>HMAC-SHA256 del encabezado y el contenido con <span class="mono">JWT_SECRET</span>. Aquí se muestra recortada.</p></dd>
+          </div>
+        </dl>
+      </section>
+    </aside>
+  </div>
+</main>
+
+<%- include('partials/footer', { script: 'dashboard' }) %>

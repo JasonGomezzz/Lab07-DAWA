@@ -210,11 +210,11 @@ export function formatDate(value, { utc = false } = {}) {
 export function formatDateTime(value) {
     if (!value) return '—';
     const date = new Date(value);
-    return `${formatDate(date)} · ${date.toLocaleTimeString(LOCALE, { hour: '2-digit', minute: '2-digit' })}`;
+    return `${formatDate(date)} · ${date.toLocaleTimeString(LOCALE, { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' })}`;
 }
 
 export function formatTime(value) {
-    return new Date(value).toLocaleTimeString(LOCALE, { hour: '2-digit', minute: '2-digit' });
+    return new Date(value).toLocaleTimeString(LOCALE, { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' });
 }
 
 // Valor YYYY-MM-DD para <input type="date"> a partir de la fecha guardada en UTC.

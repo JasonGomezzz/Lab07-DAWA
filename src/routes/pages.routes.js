@@ -13,6 +13,9 @@ router.get('/', (req, res) => res.redirect('/signIn'));
 router.get('/signIn', page('signIn', { title: 'Iniciar sesión', guard: 'guest', nav: 'guest', current: 'signIn' }));
 router.get('/signUp', page('signUp', { title: 'Crear cuenta', guard: 'guest', nav: 'guest', current: 'signUp' }));
 
+// Rol user o superior (admin también entra)
+router.get('/dashboard', page('dashboard', { title: 'Mi panel', guard: 'user', nav: 'app', current: 'dashboard' }));
+
 export function pageNotFound(req, res) {
     res.status(404).render('404', {
         title: 'Página no encontrada',
