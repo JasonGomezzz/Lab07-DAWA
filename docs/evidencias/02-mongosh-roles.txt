@@ -1,0 +1,30 @@
+# Evidencia del procedimiento: consulta de roles con mongosh
+# Fecha: 2026-10-03 09:20 · mongosh 2.12.0 · MongoDB 8.0.32
+
+> show dbs
+> use auth_db
+> db.roles.find().pretty()
+
+test> admin         40.00 KiB
+auth_db       24.00 KiB
+config        60.00 KiB
+local         40.00 KiB
+socialmedia  180.00 KiB
+test> switched to db auth_db
+auth_db> [
+  {
+    _id: ObjectId('6ac10f0dd26f7db68f39ac8b'),
+    name: 'user',
+    createdAt: ISODate('2026-10-03T14:19:57.905Z'),
+    updatedAt: ISODate('2026-10-03T14:19:57.905Z'),
+    __v: 0
+  },
+  {
+    _id: ObjectId('6ac10f0dd26f7db68f39ac8d'),
+    name: 'admin',
+    createdAt: ISODate('2026-10-03T14:19:57.911Z'),
+    updatedAt: ISODate('2026-10-03T14:19:57.911Z'),
+    __v: 0
+  }
+]
+auth_db> 
