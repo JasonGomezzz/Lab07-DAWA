@@ -1,0 +1,71 @@
+<%
+  // nav: 'guest' (ingreso/registro), 'app' (sesión iniciada) o 'auto' (decide auth.js).
+  const navMode = locals.nav || 'guest';
+  const current = locals.current || '';
+  const appLinks = [
+    { key: 'dashboard', href: '/dashboard', label: 'Mi panel', icon: 'panel' },
+    { key: 'profile', href: '/profile', label: 'Mi cuenta', icon: 'user' },
+    { key: 'admin', href: '/admin/dashboard', label: 'Registro', icon: 'users', role: 'admin' }
+  ];
+  const guestLinks = [
+    { key: 'signIn', href: '/signIn', label: 'Ingresar', icon: 'key' },
+    { key: 'signUp', href: '/signUp', label: 'Crear cuenta', icon: 'arrow', cta: true }
+  ];
+  const showApp = navMode === 'app';
+  const showGuest = navMode !== 'app';
+%>
+<header class="site-header">
+  <div class="shell site-header__bar">
+    <a class="wordmark" href="/" aria-label="Salvoconducto, inicio">
+      <svg class="wordmark__seal" viewBox="0 0 40 40" aria-hidden="true">
+        <circle cx="20" cy="20" r="19.5" fill="#6a1b2c"/>
+        <circle cx="20" cy="20" r="15.5" fill="none" stroke="#c9962e" stroke-width="1.2" stroke-dasharray="1.4 2.2"/>
+        <circle cx="20" cy="16.2" r="4.4" fill="#f4e9d2"/>
+        <path d="M17.5 19.4h5l1.6 9.2h-8.2z" fill="#f4e9d2"/>
+      </svg>
+      <span>SALVOCONDUCTO</span>
+    </a>
+
+    <nav class="site-nav" aria-label="Principal">
+      <% if (navMode !== 'guest') { %>
+      <div class="site-nav__group" data-nav="app" <%= showApp ? '' : 'hidden' %>>
+        <% appLinks.forEach((link) => { %>
+        <a href="<%= link.href %>" class="<%= current === link.key ? 'is-current' : '' %>" <%- current === link.key ? 'aria-current="page"' : '' %> <%- link.role ? `data-only-role="${link.role}" hidden` : '' %>><%= link.label %></a>
+        <% }) %>
+        <span class="session-clock" data-session-clock title="Tiempo que le queda a tu token">
+          <svg class="icon"><use href="#i-clock"/></svg><span class="mono" data-session-left>--:--</span>
+        </span>
+        <button type="button" class="nav-logout" data-action="logout">
+          <svg class="icon"><use href="#i-logout"/></svg>Salir
+        </button>
+      </div>
+      <% } %>
+      <% if (showGuest) { %>
+      <div class="site-nav__group" data-nav="guest">
+        <% guestLinks.forEach((link) => { %>
+        <a href="<%= link.href %>" class="<%= link.cta ? 'nav-cta' : '' %> <%= current === link.key ? 'is-current' : '' %>" <%- current === link.key ? 'aria-current="page"' : '' %>><%= link.label %><% if (link.cta) { %> <svg class="icon icon-arrow"><use href="#i-arrow"/></svg><% } %></a>
+        <% }) %>
+      </div>
+      <% } %>
+    </nav>
+
+    <button type="button" class="nav-toggle sidenav-trigger" data-target="menu-movil" aria-label="Abrir menú" aria-controls="menu-movil">
+      <svg class="icon"><use href="#i-menu"/></svg>
+    </button>
+  </div>
+</header>
+
+<ul id="menu-movil" class="sidenav" aria-label="Menú">
+  <li class="sidenav__head"><span class="wordmark wordmark--small">SALVOCONDUCTO</span></li>
+  <% if (navMode !== 'guest') { %>
+    <% appLinks.forEach((link) => { %>
+  <li data-nav="app" <%= showApp && !link.role ? '' : 'hidden' %> <%- link.role ? `data-only-role="${link.role}"` : '' %>><a href="<%= link.href %>" class="<%= current === link.key ? 'is-current' : '' %>"><svg class="icon"><use href="#i-<%= link.icon %>"/></svg><%= link.label %></a></li>
+    <% }) %>
+  <li data-nav="app" <%= showApp ? '' : 'hidden' %>><button type="button" class="nav-logout" data-action="logout"><svg class="icon"><use href="#i-logout"/></svg>Cerrar sesión</button></li>
+  <% } %>
+  <% if (showGuest) { %>
+    <% guestLinks.forEach((link) => { %>
+  <li data-nav="guest"><a href="<%= link.href %>" class="<%= current === link.key ? 'is-current' : '' %>"><svg class="icon"><use href="#i-<%= link.icon %>"/></svg><%= link.label %></a></li>
+    <% }) %>
+  <% } %>
+</ul>

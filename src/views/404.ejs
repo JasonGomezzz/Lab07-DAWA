@@ -1,0 +1,23 @@
+<%- include('partials/head', { styles: ['pages/errors'] }) %>
+<%- include('partials/header') %>
+
+<main id="contenido" class="shell error-page">
+  <div class="error-page__copy">
+    <h1 class="display">Esta puerta <em>no existe.</em></h1>
+    <p class="lede">
+      No hay ninguna página en <span class="path-tag mono"><%= requestedPath %></span>.
+      Revisa la dirección o vuelve al inicio; tu sesión sigue donde la dejaste.
+    </p>
+    <div class="error-page__actions">
+      <a class="btn btn-ink" href="/" data-home-link>Volver al inicio <svg class="icon icon-arrow"><use href="#i-arrow"/></svg></a>
+    </div>
+  </div>
+
+  <div class="error-art error-art--404" aria-hidden="true">
+    <span class="error-art__code">404</span>
+    <span class="error-art__ring"></span>
+    <span class="error-art__caption mono">Ruta sin registrar<br>Destino desconocido</span>
+  </div>
+</main>
+
+<%- include('partials/footer') %>

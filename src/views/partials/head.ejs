@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="es" theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#f2ede1">
+  <title><%= title %> · Salvoconducto</title>
+  <link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/vendor/fonts/instrument-sans/400.css">
+  <link rel="stylesheet" href="/vendor/fonts/instrument-sans/500.css">
+  <link rel="stylesheet" href="/vendor/fonts/instrument-sans/600.css">
+  <link rel="stylesheet" href="/vendor/fonts/instrument-serif/400-italic.css">
+  <link rel="stylesheet" href="/vendor/fonts/space-mono/400.css">
+  <link rel="stylesheet" href="/vendor/fonts/space-mono/700.css">
+  <link rel="stylesheet" href="/vendor/materialize/css/materialize.min.css">
+  <link rel="stylesheet" href="/css/app.css">
+<% (locals.styles || []).forEach((name) => { %>  <link rel="stylesheet" href="/css/<%= name %>.css">
+<% }) %></head>
+<% const guarded = ['user', 'admin'].includes(locals.guard); %>
+<body class="<%= guarded ? 'is-guarded' : '' %>" data-guard="<%= locals.guard || 'public' %>">
+<%- include('icons') %>
+<a class="skip-link" href="#contenido">Saltar al contenido</a>
+<% if (guarded) { %><noscript><p class="shell noscript">Esta página necesita JavaScript para validar tu sesión.</p></noscript><% } %>
