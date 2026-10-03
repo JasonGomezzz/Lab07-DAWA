@@ -4,6 +4,7 @@ import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
+import authRoutes from './routes/auth.routes.js';
 
 const app = express();
 
@@ -11,6 +12,9 @@ const app = express();
 app.use(cors());
 
 app.use(express.json());
+
+// Rutas
+app.use('/api/auth', authRoutes);
 
 // Validar estado del servidor
 app.get('/health', (req, res) => res.status(200).json({ ok: true }));
