@@ -1,0 +1,86 @@
+/* SignIn y SignUp */
+
+.auth {
+  display: grid;
+  grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+  gap: clamp(40px, 7vw, 128px);
+  padding-block: clamp(40px, 6vw, 80px) 0;
+}
+
+.auth__aside {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 600px;
+}
+.auth__aside .lede { margin-top: 28px; }
+
+.auth__panel { align-self: start; border-top: 2px solid var(--ink); }
+
+.panel-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 28px;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--line);
+}
+.panel-head h2 { font-size: 22px; font-weight: 600; letter-spacing: -.02em; }
+.panel-head .meta { font-size: 12px; color: var(--ink-soft); white-space: nowrap; }
+
+[data-notice] { margin-bottom: 24px; }
+
+.auth__switch {
+  margin-top: 32px;
+  padding-top: 22px;
+  border-top: 1px dashed var(--line);
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+
+.input-field .supporting-text:empty { display: none; }
+
+.age-hint { font-family: var(--font-mono); font-size: 12px; color: var(--ink-soft); }
+
+/* Tapa de pasaporte decorativa */
+.passport-cover {
+  margin-top: auto;
+  width: 214px;
+  aspect-ratio: 5 / 7;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 26px 18px 20px;
+  border-radius: 6px 14px 14px 6px;
+  background: radial-gradient(130% 100% at 22% 10%, #81273a 0%, var(--cover) 50%, var(--cover-2) 100%);
+  box-shadow:
+    inset 8px 0 0 rgba(0, 0, 0, .16),
+    0 2px 3px rgba(20, 28, 51, .2),
+    0 34px 54px -26px rgba(20, 28, 51, .6);
+  color: var(--seal);
+  text-align: center;
+  transform: rotate(-6deg);
+  transform-origin: bottom left;
+}
+.passport-cover__top {
+  font: 700 11px/1 var(--font-mono);
+  letter-spacing: .28em;
+  text-transform: uppercase;
+}
+.passport-cover__emblem { width: 92px; height: 92px; }
+.passport-cover__title {
+  font-family: var(--font-serif);
+  font-size: 26px;
+  font-style: italic;
+  line-height: 1.05;
+  color: var(--seal-soft);
+}
+.passport-cover__foot { font-size: 9px; letter-spacing: .18em; opacity: .85; }
+
+@media (max-width: 900px) {
+  .auth { grid-template-columns: 1fr; gap: 32px; }
+  .auth__aside { min-height: 0; }
+  .passport-cover { display: none; }
+}

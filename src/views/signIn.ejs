@@ -1,0 +1,52 @@
+<%- include('partials/head', { styles: ['pages/auth'] }) %>
+<%- include('partials/header') %>
+
+<main id="contenido" class="shell auth">
+  <section class="auth__aside">
+    <h1 class="display">Muestra tu <em>pase.</em></h1>
+    <p class="lede">
+      Ingresa con tu correo y contraseña. El servidor te entrega un token firmado
+      que abre las puertas que tu rol permite durante la próxima hora.
+    </p>
+    <%- include('partials/passport-cover', { coverTitle: 'Pase de acceso' }) %>
+  </section>
+
+  <section class="auth__panel" aria-labelledby="titulo-form">
+    <div class="panel-head">
+      <h2 id="titulo-form">Iniciar sesión</h2>
+      <span class="meta mono">POST /api/auth/signIn</span>
+    </div>
+
+    <div data-notice hidden></div>
+
+    <form id="form-signin" class="form-stack" novalidate>
+      <div class="input-field">
+        <label for="email">Correo electrónico</label>
+        <input id="email" name="email" type="email" inputmode="email" autocomplete="email" required placeholder="nombre@correo.com">
+        <span class="supporting-text"></span>
+      </div>
+
+      <div class="input-field">
+        <label for="password">Contraseña</label>
+        <div class="input-affix">
+          <input id="password" name="password" type="password" autocomplete="current-password" required placeholder="Tu contraseña">
+          <button type="button" class="affix-btn" data-toggle-password="password" aria-label="Mostrar contraseña" aria-pressed="false">
+            <svg class="icon"><use href="#i-eye"/></svg>
+          </button>
+        </div>
+        <span class="supporting-text"></span>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-ink">
+          <span data-label>Entrar</span>
+          <svg class="icon icon-arrow"><use href="#i-arrow"/></svg>
+        </button>
+      </div>
+    </form>
+
+    <p class="auth__switch">¿Todavía no tienes cuenta? <a class="text-link" href="/signUp">Solicita tu pase</a></p>
+  </section>
+</main>
+
+<%- include('partials/footer', { script: 'signIn' }) %>
