@@ -7,6 +7,7 @@ import mongoose from 'mongoose';
 import authRoutes from './routes/auth.routes.js';
 import userRoutes from './routes/users.routes.js';
 import seedRoles from './utils/seedRoles.js';
+import seedUsers from './utils/seedUsers.js';
 import errorHandler, { apiNotFound } from './middlewares/errorHandler.js';
 
 const app = express();
@@ -35,6 +36,7 @@ mongoose.connect(process.env.MONGODB_URI, { autoIndex: true })
     .then(async () => {
         console.log('Mongo connected');
         await seedRoles();
+        await seedUsers();
         app.listen(PORT, () => console.log(`Servidor corriendo en el puerto ${PORT}`));
     })
     .catch(err => {
