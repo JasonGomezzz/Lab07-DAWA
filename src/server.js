@@ -5,6 +5,7 @@ import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import authRoutes from './routes/auth.routes.js';
+import userRoutes from './routes/users.routes.js';
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.use(express.json());
 
 // Rutas
 app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
 
 // Validar estado del servidor
 app.get('/health', (req, res) => res.status(200).json({ ok: true }));
